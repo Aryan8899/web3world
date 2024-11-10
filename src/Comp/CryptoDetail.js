@@ -5,8 +5,9 @@ import Chart from "./Chart";
 import MarketTable from "./MarketTable";
 import CryptoAbout from "./CryptoAbout";
 import "../App.css";
+import { Helmet } from "react-helmet";
 
-const CryptoDetail = () => {
+const CryptoDetail = ({ toggleSecondNavbar }) => {
   const { id } = useParams();
   const navigate = useNavigate(); // Initialize useNavigate
   const [cryptoDetail, setCryptoDetail] = useState(null);
@@ -27,19 +28,42 @@ const CryptoDetail = () => {
   const similarCoinsRef = useRef(null);
 
   useEffect(() => {
+    toggleSecondNavbar(true); // Show the second navbar when the component mounts
+    return () => {
+      toggleSecondNavbar(false); // Hide the second navbar when the component unmounts
+    };
+  }, [toggleSecondNavbar]);
+
+  useEffect(() => {
     const fetchCryptoDetail = async () => {
       setError(null);
       try {
         const response = await axios.get(
-          `https://api.webthreeworld.com/api/cryptocurrencies/${id}`
+          `https://api1.webthreeworld.com/api/cryptocurrencies/${id}`
         );
         setCryptoDetail(response.data);
-
+  
         if (response.data && response.data.data && response.data.data.slug) {
-          const slug = response.data.data.slug;
+          let slug = response.data.data.slug;
+  
+          // If the slug is 'bnb', change it to 'binance-coin'
+          if (slug === "bnb") {
+            slug = "binance-coin";
+          }
+          else if (slug === "toncoin") {
+            slug = "the-open-network";
+          }
+          else if(slug === "polkadot-new"){
+            slug = "polkadot";
+          }
+  
           const performanceResponse = await axios.get(
-            `https://api.webthreeworld.com/api/price-performance/${slug}`
+            `https://api1.webthreeworld.com/api/price-performance/${slug}`
           );
+  
+          // Log the performance response to ensure it's using 'binance-coin'
+          console.log(`Performance data for ${slug}:`, performanceResponse.data);
+  
           setPricePerformance(performanceResponse.data);
         }
       } catch (error) {
@@ -47,16 +71,19 @@ const CryptoDetail = () => {
         setError(error.response ? error.response.data : "An error occurred");
       }
     };
-
+  
     fetchCryptoDetail();
   }, [id]);
+
+  
+  
 
   useEffect(() => {
     const fetchPricePerformance = async () => {
       try {
         const cryptoName = cryptoDetail.data.name.toLowerCase();
         const response = await axios.get(
-          `https://api.webthreeworld.com/api/price-performance/${cryptoName}`
+          `https://api1.webthreeworld.com/api/price-performance/${cryptoName}`
         );
         const pricePerformanceData = response.data;
         if (pricePerformanceData) {
@@ -195,6 +222,14 @@ const CryptoDetail = () => {
     : [];
 
   return (
+    <> 
+    
+   
+    <Helmet>
+        <title>{`${name} (${symbol}):  ${cryptoDetail.data.quote?.USD?.price?.toFixed(2) ?? "N/A"} - Crypto Details`}</title>
+        <meta name="description" content={`Details about ${name} cryptocurrency`} />
+      </Helmet>
+
     <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row move-down">
       {/* Sidebar for Crypto Details */}
       <div className="w-full md:w-1/3 bg-white shadow-lg rounded-lg p-6 md:mr-6 mb-6 md:mb-0">
@@ -617,6 +652,7 @@ const CryptoDetail = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

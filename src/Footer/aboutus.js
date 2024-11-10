@@ -1,7 +1,16 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
 const AboutUs = () => {
   return (
+    <>
+    
+  
+    <Helmet>
+    <title>Leading Innovators in Cryptocurrency & Blockchain Solutions | Web3 World</title>
+    <meta name="description" content={`Revolutionizing crypto with cutting-edge blockchain solutions and a commitment to
+security and transparency`} />
+  </Helmet>
     <div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">About Us</h1>
@@ -77,6 +86,7 @@ const AboutUs = () => {
         </section>
       </div>
     </div>
+    </>
   );
 };
 

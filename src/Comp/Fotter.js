@@ -94,6 +94,7 @@ const Footer = () => {
                       Disclaimer
                     </NavLink>
                   </li>
+                  {/*
                   <li className="cursor-pointer">
                     <NavLink
                       to="/Career"
@@ -107,6 +108,7 @@ const Footer = () => {
                       Careers
                     </NavLink>
                   </li>
+                       */ }
                 </ul>
               </div>
               <div className="order-2 md:order-2">
@@ -155,6 +157,7 @@ const Footer = () => {
                       <span className="ml-2">Telegram</span>
                     </a>
                   </li>
+                  
                 </ul>
               </div>
             </div>

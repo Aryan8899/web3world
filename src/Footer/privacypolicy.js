@@ -1,7 +1,15 @@
 import React from 'react';
+import { Helmet } from "react-helmet";
 
 const PrivacyPolicy = () => {
   return (
+    <>
+
+    <Helmet>
+    <title>Protecting Your Data in the Crypto Space | Web3 World</title>
+    <meta name="description" content={`: Learn how we safeguard your data and ensure privacy in the crypto space`} />
+  </Helmet> 
+    
     <div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
@@ -165,6 +173,7 @@ have the right to lodge a complaint with your local data protection authority or
 
       </div>
     </div>
+    </>
   );
 };
 

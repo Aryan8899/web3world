@@ -2,6 +2,10 @@
   position: fixed;
 }
 
+.content-wrapper {
+  padding-top: 120px; /* Adjust this value based on your navbar height */
+}
+
 .inset-0 {
   top: 0;
   right: 0;
@@ -33,6 +37,7 @@
   transition: opacity 300ms, transform 300ms;
 }
 
+
 .mobile-menu-exit {
   opacity: 1;
 }
@@ -44,6 +49,22 @@
 }
 
 @media (max-width: 768px) {
+  .content {
+    display: none;
+  }
+
+  .nav-hidden {
+    display: none;
+  }
+
+  .nav-hidden {
+    display: none;
+  }
+  
+  .content-wrapper {
+    padding-top: 120px; /* Adjust this value based on your navbar height */
+  }
+
   .hide-navbar {
     display: none !important;
   }
@@ -118,10 +139,22 @@
     z-index: 999;
   }
 
+  .mobile-nav {
+   
+    top: 90px; /* Increase this value to push it below the main navbar */
+    left: 0;
+    width: 100%;
+    /* ... other properties ... */
+  }
+
   .mobile-nav .container {
     display: inline-block;
     min-width: 100%;
   }
+  .content {
+    display: none;
+  }
+  
 
   .mobile-nav {
     position: fixed;
@@ -188,12 +221,33 @@
 }
 
 @media (min-width: 769px) {
+  .content-wrapper {
+    padding-top: 180px; /* Adjust this value based on your navbar height */
+  }
+
   .mobile-only {
     display: none;
   }
+  .content {
+    display: none;
+  }
+  
 }
 
 @media (max-width: 768px) {
+  .content {
+    display: none;
+  }
+
+  .nav-hidden {
+    display: none;
+  }
+
+  .nav-hidden {
+    display: none;
+  }
+  
+  
   .exchange-table td:first-child {
     padding-left: 23px;
   }
@@ -215,6 +269,13 @@
 }
 
 @media (min-width: 769px) {
+  .content {
+    display: none;
+  }
+  .nav-hidden {
+    display: none;
+  }
+  
   .hide-on-desktop {
     display: none;
   }
@@ -245,3 +306,31 @@
 .connect-wallet-button:hover {
   background-color: #d0d9f2;
 }
+
+/* index.css or your custom CSS file */
+
+/* index.css or App.css */
+
+.box-container {
+  padding: 0.5rem; /* Reduce padding */
+  height: auto; /* Ensure height is auto to fit content */
+}
+
+.box-title {
+  font-size: 1rem; /* Adjust font size */
+  margin-bottom: 0.5rem; /* Adjust margin */
+}
+
+.box-content {
+  margin-bottom: 0.5rem; /* Adjust margin */
+}
+
+.box-content li {
+  margin-bottom: 0.5rem; /* Adjust margin between list items */
+}
+
+.box-content img {
+  width: 7rem; /* Adjust image size */
+  height: 7rem;
+}
+

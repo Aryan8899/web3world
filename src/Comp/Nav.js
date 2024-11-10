@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/20/solid";
 import Web3world from "./Images/Web3 World.png";
+import { Helmet } from "react-helmet";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,6 +11,7 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXTwitter,
@@ -43,15 +46,16 @@ export default function Nav() {
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false); // State for the wallet modal
   const [account, setAccount] = useState(null);
+  const [shortAccount, setShortAccount] = useState(null);
 
   const cryptoTableRef = useRef(null);
 
   const stats = [
     { label: "Crypto", value: "2.4M+", change: null },
-    { label: "Exchanges", value: "770", change: null },
-    { label: "Market Cap", value: "$2.56T", change: "🔻1.47%" },
-    { label: "24h Vol", value: "$91.03B", change: "🔻12.50%" },
-    { label: "Dominance", value: "BTC: 52.4% ETH: 18.2%", change: null },
+    { label: "Exchanges", value: "801", change: null },
+    { label: "Market Cap", value: "$2.14T", change: "🔼 1.50%" },
+    { label: "24h Vol", value: "$70.44B", change: "🔻15.07%" },
+    { label: "Dominance", value: "BTC: 56.0% ETH: 14.7%", change: null },
   ];
 
   useEffect(() => {
@@ -78,6 +82,39 @@ export default function Nav() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window.ethereum !== "undefined") {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setShortAccount(
+            `${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`
+          );
+        } else {
+          setAccount(null);
+          setShortAccount(null);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (typeof window.ethereum !== "undefined") {
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setShortAccount(
+            `${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`
+          );
+        }
+      }
+    };
+    checkConnection();
   }, []);
 
   const openCurrencyModal = () => setCurrencyModalOpen(true);
@@ -150,9 +187,11 @@ export default function Nav() {
           await window.ethereum.request({ method: "eth_requestAccounts" });
           const provider = new ethers.BrowserProvider(window.ethereum);
           const signer = provider.getSigner();
-          console.log(signer);
+          // console.log(signer);
           const address = await signer.getAddress();
           setAccount(address); // Save the account address to state
+          const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+          setShortAccount(shortAddress);
           closeWalletModal(); // Close the modal after connecting
           console.log("Connected with address:", address);
         } else {
@@ -167,6 +206,15 @@ export default function Nav() {
   };
 
   return (
+    <> 
+    
+    
+    
+    <Helmet>
+    <title>Live Cryptocurrency Prices, Interactive Charts, and Market Capitalizations.</title>
+    <meta name="description" content={`Join our team! We're looking for talented blockchain developers to drive
+innovation in the crypto space`} />
+  </Helmet> 
     <div className="App">
       <style>{`
         html, body {
@@ -239,11 +287,6 @@ export default function Nav() {
               </div>
               <div className="flex items-center space-x-4">
                 <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 text-sm font-bold text-black">
-                      English
-                    </Menu.Button>
-                  </div>
                   <Transition
                     as={Fragment}
                     show={openDropdown === "language"}
@@ -256,21 +299,6 @@ export default function Nav() {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active
-                                  ? "bg-gray-100 text-black font-bold"
-                                  : "text-black font-bold",
-                                "block px-4 py-2 text-sm"
-                              )}
-                            >
-                              English
-                            </a>
-                          )}
-                        </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -305,12 +333,6 @@ export default function Nav() {
                     </Menu.Items>
                   </Transition>
                 </Menu>
-                <button
-                  className="text-black font-bold hover:text-gray-900 text-sm"
-                  onClick={openCurrencyModal}
-                >
-                  USD🔽
-                </button>
               </div>
             </div>
             {/* Divider */}
@@ -454,6 +476,7 @@ export default function Nav() {
                                     Telegram
                                   </span>
                                 </a>
+                                
                               </div>
                             </div>
                           </Menu.Items>
@@ -493,12 +516,18 @@ export default function Nav() {
                   >
                     <Bars3Icon className="w-6 h-6" />
                   </button>
-                  <button
-                    onClick={openWalletModal}
-                    className="connect-wallet-button hidden md:block text-sm font-bold ml-2"
-                  >
-                    Connect Wallet
-                  </button>
+                  {account ? (
+                    <div className="connect-wallet-button text-sm font-bold hidden md:block">
+                      Connected: {shortAccount}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={openWalletModal}
+                      className="connect-wallet-button hidden md:block text-sm font-bold ml-2"
+                    >
+                      Connect Wallet
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -615,6 +644,8 @@ export default function Nav() {
                             </a>
                           )}
                         </Menu.Item>
+
+                        
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -646,12 +677,6 @@ export default function Nav() {
                     </Link>
                   </div>
                   {/* Mobile Connect Wallet option */}
-                  <button
-                    onClick={openWalletModal}
-                    className="connect-wallet-button block w-full text-left px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    Connect Wallet
-                  </button>
                 </div>
               </div>
             )}
@@ -660,9 +685,9 @@ export default function Nav() {
       </header>
 
       {/* Wallet Modal */}
-      {isWalletModalOpen && (
+      {!account && isWalletModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-auto">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Connect Wallet</h2>
               <button
@@ -672,9 +697,9 @@ export default function Nav() {
                 ✕
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-10">
+            <div className="flex flex-col items-center">
               <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-4 rounded-lg"
                 onClick={() => connectWallet("metamask")}
               >
                 <img
@@ -684,65 +709,11 @@ export default function Nav() {
                 />
                 <span>Metamask</span>
               </div>
-              <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                onClick={() => connectWallet("walletconnect")}
-              >
-                <img
-                  src="https://seeklogo.com/images/W/walletconnect-logo-EE83B50C97-seeklogo.com.png"
-                  alt="WalletConnect"
-                  className="h-12 mb-2"
-                />
-                <span>WalletConnect</span>
-              </div>
-              <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                onClick={() => connectWallet("trustwallet")}
-              >
-                <img
-                  src="https://trustwallet.com/assets/images/media/assets/TWT.png"
-                  alt="Trust Wallet"
-                  className="h-12 mb-2"
-                />
-                <span>Trust Wallet</span>
-              </div>
-              <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                onClick={() => connectWallet("mathwallet")}
-              >
-                <img
-                  src="https://medishares.oss-cn-hongkong.aliyuncs.com/logo/math/MathWallet_App_Icon.png"
-                  alt="MathWallet"
-                  className="h-12 mb-2"
-                />
-                <span>MathWallet</span>
-              </div>
-              <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                onClick={() => connectWallet("tokenpocket")}
-              >
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH8l_OVc5q_1YltqhZwVBQxX5eMMYdpv-mIQ&s"
-                  alt="TokenPocket"
-                  className="h-12 mb-2"
-                />
-                <span>TokenPocket</span>
-              </div>
-              <div
-                className="wallet-option flex flex-col items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
-                onClick={() => connectWallet("safepal")}
-              >
-                <img
-                  src="https://yt3.googleusercontent.com/cGmfHKdVyJgR5ndq3C335GaPlbmyEgKIa-0nfIbab5hQUOzh3zNgyRh11pOfkay3UVMvfGrPxg=s900-c-k-c0x00ffffff-no-rj"
-                  alt="SafePal"
-                  className="h-12 mb-2"
-                />
-                <span>SafePal</span>
-              </div>
             </div>
           </div>
         </div>
       )}
     </div>
+    </>
   );
 }

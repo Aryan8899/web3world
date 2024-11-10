@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'; // Import icons from react-icons library
+import { Helmet } from "react-helmet";
 
 const FAQPage = () => {
   // FAQ data as an array of objects
@@ -76,6 +77,13 @@ const FAQPage = () => {
   };
 
   return (
+    <>
+    
+  
+    <Helmet>
+    <title>Answers to Your Crypto Questions and Concerns | Web3 World</title>
+    <meta name="description" content={`Find answers to common questions about our crypto services and platform`} />
+  </Helmet>
     <div className="bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-5xl font-bold text-center text-gray-900 mb-4">FAQ</h1>
@@ -112,6 +120,7 @@ const FAQPage = () => {
 
       </div>
     </div>
+    </>
   );
 };
 

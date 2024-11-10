@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { Helmet } from "react-helmet";
 
 export default function Consulting() {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ export default function Consulting() {
        Phone - ${phone} 
        Message - ${message}`;
 
-      return axios.post("https://email.webthreeworld.com/send_email", {
+      return axios.post("https://email1.webthreeworld.com/send_email", {
         recipient_email: defaultRecipientEmail,
         subject,  
         message: text,
@@ -87,6 +88,14 @@ export default function Consulting() {
   const isSubmitDisabled = !agreeTerms || isSubmitting;
 
   return (
+    <>
+    
+    
+    <Helmet>
+    <title>Expert Guidance for Your Crypto Solutions | Web3 World</title>
+    <meta name="description" content={` Get expert guidance and strategic insights to optimize your blockchain and crypto
+projects`} />
+  </Helmet> 
     <form className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" onSubmit={handleSubmit}>
       <div className="space-y-8">
         <div className="pb-8 border-b border-gray-200">
@@ -227,5 +236,6 @@ export default function Consulting() {
       </div>
       <hr className="my-6 mb-0 border-t border-gray-200" />
     </form>
+    </>
   );
 }

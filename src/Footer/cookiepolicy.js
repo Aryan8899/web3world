@@ -1,7 +1,16 @@
 import React from 'react';
+import { Helmet } from "react-helmet";
 
 const CookiePolicy = () => {
   return (
+    <>
+    
+    <Helmet>
+    <title>How We Use Cookies in the Crypto Space | Web3 Worl</title>
+    <meta name="description" content={` Find out how we use cookies to enhance your experience and ensure privacy in
+the crypto space`} />
+  </Helmet>
+
     <div className="cookie-policy max-w-7xl mx-auto p-4">
       <h1 className="text-3xl md:text-4xl font-bold mb-8">Cookie Policy</h1>
 
@@ -102,6 +111,8 @@ const CookiePolicy = () => {
           </section>
           <hr className="my-4 border-t border-gray-200" />
       </div>
+
+      </>
     );
 }
 

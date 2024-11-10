@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { Helmet } from "react-helmet";
 
 export default function ContactSupport() {
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ export default function ContactSupport() {
     const { firstName, lastName, email, phone, message } = formData;
 
     if (firstName && lastName && email && phone && message) {
-      const subject = `Contact Support - ${firstName} ${lastName}`;
+      const subject = `Advertise With Us - ${firstName} ${lastName}`;
       const text = 
       `Details :
        Name - ${firstName} ${lastName}
@@ -31,7 +32,7 @@ export default function ContactSupport() {
        Phone - ${phone} 
        Message - ${message}`;
 
-      return axios.post("https://email.webthreeworld.com/send_email", {
+      return axios.post("https://email1.webthreeworld.com/send_email", {
         recipient_email: defaultRecipientEmail,
         subject,  
         message: text,
@@ -87,6 +88,16 @@ export default function ContactSupport() {
   const isSubmitDisabled = !agreeTerms || isSubmitting;
 
   return (
+
+    <>
+    
+    
+    <Helmet>
+    <title>Reach Your Audience in the Crypto Space | Web3 World</title>
+    <meta name="description" content={`Expand your reach in the crypto world. Advertise with us to connect with a
+targeted audience`} />
+  </Helmet> 
+
     <form className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" onSubmit={handleSubmit}>
       <div className="space-y-8">
         <div className="pb-8 border-b border-gray-200">
@@ -227,5 +238,6 @@ export default function ContactSupport() {
       </div>
       <hr className="my-6 mb-0 border-t border-gray-200" />
     </form>
+    </>
   );
 }

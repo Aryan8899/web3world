@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { Helmet } from "react-helmet";
 
 export default function HireBlockchainDeveloper() {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ export default function HireBlockchainDeveloper() {
        Phone - ${phone} 
        Message - ${message}`;
 
-      return axios.post("https://email.webthreeworld.com/send_email", {
+      return axios.post("https://email1.webthreeworld.com/send_email", {
         recipient_email: defaultRecipientEmail,
         subject,  
         message: text,
@@ -84,6 +85,14 @@ export default function HireBlockchainDeveloper() {
   const isSubmitDisabled = !agreeTerms;
 
   return (
+    <>
+    
+    
+    <Helmet>
+    <title>Join Our Team of Crypto Innovators | Web3 World</title>
+    <meta name="description" content={`Join our team! We're looking for talented blockchain developers to drive
+innovation in the crypto space`} />
+  </Helmet> 
     <form className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" onSubmit={handleSubmit}>
       <div className="space-y-8">
         <div className="pb-8 border-b border-gray-200">
@@ -224,5 +233,6 @@ export default function HireBlockchainDeveloper() {
       </div>
       <hr className="my-6 mb-0 border-t border-gray-200" />
     </form>
+    </>
   );
 }

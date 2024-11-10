@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 function NewsPage() {
   const [mainNews, setMainNews] = useState(null);
@@ -31,35 +32,44 @@ function NewsPage() {
 
   const fetchNewsData = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/articles");
+      const response = await axios.get("https://mongodb.webthreeworld.com/articles");
       let fetchedNewsItems = response.data;
 
-      // Assume the last item in the array is the most recently added
       if (fetchedNewsItems.length > 0) {
         const latestNews = { ...fetchedNewsItems[fetchedNewsItems.length - 1] };
         latestNews.date = new Date(latestNews.date).toLocaleDateString();
         setMainNews(latestNews);
 
-        // Remove the latest news from the list of short news items
-        fetchedNewsItems = fetchedNewsItems.slice(0, -1);
+        fetchedNewsItems = fetchedNewsItems.slice(0, -1).reverse();
       }
 
-      // Format dates for the remaining news items
       fetchedNewsItems.forEach((item) => {
         item.date = new Date(item.date).toLocaleDateString();
       });
 
-      // Reverse the order of remaining items to show newer items first in the short news section
-      setNewsItems(fetchedNewsItems.reverse());
+      setNewsItems(fetchedNewsItems);
     } catch (error) {
       console.error("Error fetching news data:", error);
     }
   };
 
   const handleNewsClick = (item) => {
+    console.log("Clicked item:", item);
     setMainNews(item);
-    mainNewsRef.current.scrollIntoView({ behavior: "smooth" });
+    setNewsItems((prevItems) =>
+      [...prevItems.filter((news) => news.title !== item.title), mainNews].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      )
+    );
+
+    if (mainNewsRef.current) {
+      mainNewsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
+
+  useEffect(() => {
+    console.log("Main News Updated:", mainNews);
+  }, [mainNews]);
 
   const shortNewsItems = newsItems.map((item, index) => (
     <li key={index} className="mb-4">
@@ -75,7 +85,7 @@ function NewsPage() {
         </h3>
         <div className="mb-2">
           <img
-            src={`http://localhost:9000${item.image}`}
+            src={`https://mongodb.webthreeworld.com${item.image}`}
             alt={item.title}
             className="w-full h-auto rounded-lg object-cover"
             style={{ maxHeight: "200px" }}
@@ -98,6 +108,15 @@ function NewsPage() {
   ));
 
   return (
+    <>
+    
+   
+    <Helmet>
+    <title>Read Daily updates on global crypto adoption | Web3 World</title>
+    <meta name="description" content={`Read all cryptocurrency latest articles on the crypto community and also check
+global crypto adoption`} />
+  </Helmet>
+
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       {/* Main News Section */}
       <div className="lg:w-4/5 flex-shrink-0 mt-4 mb-4 overflow-hidden">
@@ -108,7 +127,7 @@ function NewsPage() {
             </h1>
             <div className="flex justify-center items-center mt-2">
               <img
-                src={`http://localhost:9000${mainNews?.image}`}
+                src={`https://mongodb.webthreeworld.com${mainNews?.image}`}
                 alt={mainNews?.title}
                 className="w-full h-full ml-4 mr-4 rounded-lg object-cover"
                 style={{ maxHeight: "500px", maxWidth: "666px" }}
@@ -145,6 +164,7 @@ function NewsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

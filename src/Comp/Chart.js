@@ -60,6 +60,34 @@ const Chart = ({ coingeckoId }) => {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
+        // Adjust the coingeckoId if it's 'bnb', 'usdc', or 'xrp'
+        if (coingeckoId === "bnb") {
+          coingeckoId = "binancecoin";
+        } else if (coingeckoId === "usdc") {
+          coingeckoId = "usd-coin";
+        } else if (coingeckoId === "xrp") {
+          coingeckoId = "ripple";
+        }else if (coingeckoId === "avalanche") {
+          coingeckoId = "avalanche-2";
+        }
+        else if(coingeckoId === "polkadot-new"){
+          coingeckoId = "polkadot";
+        }
+        else if (coingeckoId === "unus-sed-leo"){
+          coingeckoId = "leo-token";
+        }
+        else if (coingeckoId === "multi-collateral-dai"){
+          coingeckoId = "dai";
+        }
+        else if (coingeckoId === "near-protocol"){
+          coingeckoId = "near";
+        }
+        else if (coingeckoId === "polygon"){
+          coingeckoId = "matic-network";
+        }
+        
+       
+       
         console.log(
           `Fetching data for ${coingeckoId} with timeframe ${timeframe} and dataType ${dataType}`
         );
@@ -103,6 +131,8 @@ const Chart = ({ coingeckoId }) => {
         console.error("Error fetching chart data:", error);
         if (error.response && error.response.status === 404) {
           setError(`Coin with ID "${coingeckoId}" not found. Please check the ID and try again.`);
+        } else if (error.response && error.response.status === 429) {
+          setError("Rate limit exceeded. Please try again later.");
         } else if (error.response) {
           setError(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
         } else {

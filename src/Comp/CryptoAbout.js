@@ -10,7 +10,42 @@ const CryptoAbout = ({ selectedCrypto }) => {
     const fetchAboutData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${selectedCrypto}`);
+        // Adjust the cryptoId based on the selectedCrypto value
+        let cryptoId = selectedCrypto;
+        if (selectedCrypto === "bnb") {
+          cryptoId = "binancecoin";
+        } else if (selectedCrypto === "usdc") {
+          cryptoId = "usd-coin";
+        } else if (selectedCrypto === "xrp") {
+          cryptoId = "ripple";
+        } else if (selectedCrypto === "toncoin") {
+          cryptoId = "the-open-network";
+        }
+        else if (selectedCrypto === "avalanche") {
+          cryptoId = "avalanche-2";
+        }
+        else if(selectedCrypto === "polkadot-new"){
+          cryptoId = "polkadot";
+        }
+        else if (selectedCrypto === "unus-sed-leo"){
+          cryptoId = "leo-token";
+        }
+        else if (selectedCrypto === "multi-collateral-dai"){
+          cryptoId = "dai";
+        }
+        else if (selectedCrypto === "near-protocol"){
+          cryptoId = "near";
+        }
+        else if (selectedCrypto === "polygon"){
+          cryptoId = "matic-network";
+        }
+        
+        
+        
+        
+
+
+        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${cryptoId}`);
         setAboutData(response.data);
         setError(null);
       } catch (error) {

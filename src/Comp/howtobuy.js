@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiSun, FiMoon } from "react-icons/fi"; // Import Feather Icons
 import Web3world from "./Images/Web3 World.png";
+import { Helmet } from "react-helmet";
 
 const HowToBuy = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -10,6 +11,14 @@ const HowToBuy = () => {
   };
 
   return (
+    <>
+    
+    
+    <Helmet>
+    <title>Check How to Buy W3W Token from Website and Through MetaMask | Web3 World    </title>
+    <meta name="description" content={`: Create Metamask wallet and connect with web3 world website, get some USDT in
+your wallet and go to pancake swap, then swap your USDT to W3W Token.`} />
+  </Helmet>
     <div
       className={`p-8 font-sans ${
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
@@ -65,6 +74,7 @@ const HowToBuy = () => {
         />
       </div>
     </div>
+  </>
   );
 };
 

@@ -10,6 +10,7 @@ import Gateio from "../Comp/Images/Gateio.jpg";
 import HTX from "../Comp/Images/HTX.svg";
 import Bitfinex from "../Comp/Images/Bitfinex.svg";
 import KuCoin from "../Comp/Images/Kucoin.svg";
+import { Helmet } from "react-helmet";
 
 const exchanges = [
   {
@@ -30,7 +31,7 @@ const exchanges = [
   {
     name: "Bybit",
     img: BYBIT,
-    signupLink: "http://surl.li/qfkivx",
+    signupLink: "https://surl.li/qfkivx",
   },
   {
     name: "Upbit",
@@ -50,7 +51,7 @@ const exchanges = [
   {
     name: "HTX",
     img: HTX,
-    signupLink: "http://surl.li/brfzcy",
+    signupLink: "https://surl.li/brfzcy",
   },
   {
     name: "Bitfinex",
@@ -66,6 +67,14 @@ const exchanges = [
 
 const Exchanges = () => {
   return (
+    <>
+    
+    
+    <Helmet>
+    <title>Start Trading Crypto Today | Web3 World</title>
+    <meta name="description" content={`Create your account and start trading crypto easily with our secure exchange
+platform`} />
+  </Helmet> 
     <div className="container mx-auto py-8">
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10">
         Top 10 Cryptocurrency Exchanges
@@ -90,6 +99,7 @@ const Exchanges = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

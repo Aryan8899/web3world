@@ -12,6 +12,7 @@ import gaming from "./Images/gaming.png";
 import ai from "./Images/ai.png";
 import blockchain from "./Images/blockchain.png";
 import metaverse from "./Images/metaverse.png";
+import { Helmet } from "react-helmet";
 
 const generateRandomHistoricalData = () => {
   const data = [];
@@ -46,6 +47,7 @@ const filterOptions = {
 
 const FilterDropdown = ({ options, onSelect }) => {
   return (
+    
     <div className="absolute z-10 bg-white border rounded-md shadow-lg mt-2 w-64">
       <input
         type="text"
@@ -90,15 +92,22 @@ const CryptoTable = () => {
   const fetchData = async (page = 1) => {
     try {
       const response = await axios.get(
-        `https://api.webthreeworld.com/api/cryptocurrencies?page=${page}&limit=${rowsToShow}`
+        `https://api1.webthreeworld.com/api/cryptocurrencies?page=${page}&limit=${rowsToShow}`
       );
+
+       // Filter out Toncoin from the response data
+       const filteredCryptos = response.data.data.filter(crypto => 
+        crypto.name.toLowerCase() !== 'toncoin' && crypto.symbol.toLowerCase() !== 'ton'
+      );
+
       setCryptocurrencies(
-        response.data.data.map((crypto, index) => ({
+        filteredCryptos.map((crypto, index) => ({
           ...crypto,
           historicalData: generateRandomHistoricalData(),
           image: images[index % images.length],
         }))
       );
+
       if (response.data.total) {
         setTotalRows(response.data.total);
       } else {
@@ -153,6 +162,15 @@ const CryptoTable = () => {
   };
 
   return (
+    <> 
+    
+    
+    
+    <Helmet>
+    <title>Live Cryptocurrency Prices, Interactive Charts, and Market Capitalizations.</title>
+    <meta name="description" content={`Join our team! We're looking for talented blockchain developers to drive
+innovation in the crypto space`} />
+  </Helmet> 
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between items-center py-4 overflow-x-auto">
         <div className="flex space-x-2 button-group">
@@ -408,7 +426,7 @@ const CryptoTable = () => {
                       alt={crypto.name}
                       className="w-6 h-6 mr-2"
                     />
-                    {crypto.name} ({crypto.symbol})
+                     {crypto.symbol === "BNB" ? "binance-coin" : crypto.name} ({crypto.symbol})
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">
                     ${crypto.quote.USD.price.toFixed(2)}
@@ -519,6 +537,7 @@ const CryptoTable = () => {
         {/* This is the gray line */}
       </div>
     </div>
+  </>
   );
 };
 

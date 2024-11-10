@@ -1,7 +1,15 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
 const TermsOfUse = () => {
   return (
+    <>
+    
+   
+    <Helmet>
+    <title>Guidelines for Safe and Secure Crypto Engagement | Web3 World</title>
+    <meta name="description" content={`Understand our guidelines for secure and responsible use of our crypto services`} />
+  </Helmet> 
     <div className="terms-of-use bg-white text-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">Terms of Use</h1>
@@ -661,6 +669,8 @@ const TermsOfUse = () => {
         <hr className="my-8 border-t border-gray-200" />
       </div>
     </div>
+
+    </>
   );
 };
 

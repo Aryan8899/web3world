@@ -1,3 +1,22 @@
-# https://www.robotstxt.org/robotstxt.html
+# robots.txt for https://www.webthreeworld.com/
+
+# Allow all user agents to access all content
 User-agent: *
+Disallow:
+
+# Sitemap location
+Sitemap: https://www.webthreeworld.com/sitemap.xml
+
+# Block specific bots or directories if needed
+# Example:
+# Disallow: /private/
+# User-agent: BadBot
+# Disallow: /
+
+# Block access to specific types of files
+# Example:
+# Disallow: /*.pdf$
+
+# Allow crawling of images
+User-agent: Googlebot-Image
 Disallow:

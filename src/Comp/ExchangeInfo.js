@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../App.css";
+import { Helmet } from "react-helmet";
 
 const ExchangeInfo = () => {
   const [activeButton, setActiveButton] = useState("Spot");
@@ -53,6 +54,12 @@ const ExchangeInfo = () => {
 
   return (
     <>
+    
+    <Helmet>
+    <title>Top Cryptocurrency Spot Exchanges, SignUp centralized trading platform | Web3 World </title>
+    <meta name="description" content={`Join our centralized trading platform Like Binance, KuCoin, OkX, ByBit, Coinbase
+Kraken, HTX, Gate.io and many more.`} />
+  </Helmet>
       <div className="container mx-auto px-4 py-6 sm:px-8 sm:py-8">
         <h1 className="text-3xl font-bold">
           Top Cryptocurrency Spot Exchanges
